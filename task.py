@@ -20,3 +20,11 @@ def dh_transform(theta, d, a, alpha):
                      [s, c * np.cos(alpha), -c * np.sin(alpha), a * s],
                      [0, np.sin(alpha), np.cos(alpha), d],
                      [0, 0, 0, 1]])
+
+def forward_kinematics(joint_angles):
+    T, positions = np.eye(4), [np.zeros(3)]
+    for i in range(6):
+        T = T @ dh_transform(joint_angles[i], d[i], a[i], alpha[i])
+        positions.append(T[:3, 3])
+    end_effector_position = T[:3, 3]
+    return positions, end_effector_position
