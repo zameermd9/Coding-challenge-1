@@ -13,14 +13,14 @@ joint_limits = [
     (-360, 360),  #(Wrist 2)
     (-360, 360)   #(Wrist 3)
 ]
-
+#Transformation matrix
 def dh_transform(theta, d, a, alpha):
     c, s = np.cos(theta), np.sin(theta)
     return np.array([[c, -s * np.cos(alpha), s * np.sin(alpha), a * c],
                      [s, c * np.cos(alpha), -c * np.sin(alpha), a * s],
                      [0, np.sin(alpha), np.cos(alpha), d],
                      [0, 0, 0, 1]])
-
+#forward kinematics
 def forward_kinematics(joint_angles):
     T, positions = np.eye(4), [np.zeros(3)]
     for i in range(6):
@@ -28,7 +28,7 @@ def forward_kinematics(joint_angles):
         positions.append(T[:3, 3])
     end_effector_position = T[:3, 3]
     return positions, end_effector_position
-
+#robot plot
 def plot_robot(ax, joint_positions, trace_points):
     ax.cla()
     colors = ['blue', 'green', 'red', 'orange', 'purple', 'cyan']
@@ -37,4 +37,15 @@ def plot_robot(ax, joint_positions, trace_points):
         ax.plot(x, y, z, color=colors[i], lw=3, marker='o')
     ax.scatter(*joint_positions[-1], color='magenta', s=100, label="End Effector")
 
-    
+#plotting tracer
+    if trace_points:
+        trace_points = np.array(trace_points)
+        ax.plot(trace_points[:, 0], trace_points[:, 1], trace_points[:, 2], 'gray', linestyle='--', label="Trace")
+
+        ax.set(xlim=(-1, 1), ylim=(-1, 1), zlim=(0, 1), xlabel='X', ylabel='Y', zlabel='Z')
+    ax.legend()
+    plt.draw()
+    plt.pause(0.1)
+
+
+
