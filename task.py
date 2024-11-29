@@ -28,3 +28,13 @@ def forward_kinematics(joint_angles):
         positions.append(T[:3, 3])
     end_effector_position = T[:3, 3]
     return positions, end_effector_position
+
+def plot_robot(ax, joint_positions, trace_points):
+    ax.cla()
+    colors = ['blue', 'green', 'red', 'orange', 'purple', 'cyan']
+    for i in range(6):
+        x, y, z = zip(joint_positions[i], joint_positions[i + 1])
+        ax.plot(x, y, z, color=colors[i], lw=3, marker='o')
+    ax.scatter(*joint_positions[-1], color='magenta', s=100, label="End Effector")
+
+    
