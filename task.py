@@ -76,5 +76,21 @@ def simulate_motion(ax, initial_angles, final_angles, steps=50):
     print(f"  Joint Angles (degrees): {np.degrees(final_angles)}")
     print(f"  End Effector Position: ({end_effector_position[0]:.2f}, {end_effector_position[1]:.2f}, {end_effector_position[2]:.2f})")
 
+#Allowing users to input joint angles with in the limits of UR5  
+def get_joint_angles():
+    angles = []
+    for i, (min_angle, max_angle) in enumerate(joint_limits):
+        while True:
+            try:
+                angle = float(input(f"Enter angle for Joint {i + 1} (range: {min_angle}° to {max_angle}°): "))
+                if min_angle <= angle <= max_angle:
+                    angles.append(angle)
+                    break
+                else:
+                    print(f"Angle out of range! Please enter a value between {min_angle}° and {max_angle}°.")
+            except ValueError:
+                print("Invalid input. Please enter a numeric value.")
+    return angles
+
 
 
