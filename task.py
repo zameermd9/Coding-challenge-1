@@ -37,7 +37,7 @@ def plot_robot(ax, joint_positions, trace_points):
         ax.plot(x, y, z, color=colors[i], lw=3, marker='o')
     ax.scatter(*joint_positions[-1], color='magenta', s=100, label="End Effector")
 
-#plotting tracer
+#plotting tracer for the end effector
     if trace_points:
         trace_points = np.array(trace_points)
         ax.plot(trace_points[:, 0], trace_points[:, 1], trace_points[:, 2], 'gray', linestyle='--', label="Trace")
@@ -46,6 +46,35 @@ def plot_robot(ax, joint_positions, trace_points):
     ax.legend()
     plt.draw()
     plt.pause(0.1)
+
+def simulate_motion(ax, initial_angles, final_angles, steps=50):
+    #simulation with smooth movement
+    trace_points = []
+    for t in np.linspace(0, 1, steps):
+        # Smooth interpolation between initial and final angles
+        interpolated_angles = initial_angles + t * (final_angles - initial_angles)
+        
+        # forward kinematics computation
+        joint_positions, end_effector_position = forward_kinematics(interpolated_angles)
+        
+        # joint_angles(degrees)
+        joint_angles_degrees = np.degrees(interpolated_angles)
+        
+        # Printing joint angles and endeffector position at each and every step
+        print(f"Step {int(t * steps)}:")
+        print(f"  Joint Angles (degrees): {joint_angles_degrees}")
+        print(f"  End Effector Position: ({end_effector_position[0]:.2f}, {end_effector_position[1]:.2f}, {end_effector_position[2]:.2f})")
+        
+        # To store the Trace of End effector position
+        trace_points.append(end_effector_position)
+        
+        #plotting robot and its movements
+        plot_robot(ax, joint_positions, trace_points)
+    
+    # End output after simulation
+    print("\nFinal Configuration Reached:")
+    print(f"  Joint Angles (degrees): {np.degrees(final_angles)}")
+    print(f"  End Effector Position: ({end_effector_position[0]:.2f}, {end_effector_position[1]:.2f}, {end_effector_position[2]:.2f})")
 
 
 
