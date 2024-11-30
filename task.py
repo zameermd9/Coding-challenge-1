@@ -92,5 +92,29 @@ def get_joint_angles():
                 print("Invalid input. Please enter a numeric value.")
     return angles
 
+def main():
+    # Initial Angles(Default)
+    initial_angles_deg = [90, 0, -90, 0, 0, 0]
+    print("Initial joint angles are set to (90, 0, -90, 0, 0, 0)")
+
+    # Final Joint Angles
+    print("\nEnter the final joint angles:")
+    final_angles_deg = get_joint_angles()
+
+    # degrees to radians conversion
+    initial_angles_rad = np.radians(initial_angles_deg)
+    final_angles_rad = np.radians(final_angles_deg)
+
+    # 3D plot creation
+    fig, ax = plt.figure(), plt.axes(projection='3d')
+
+    #smooth movement simulation
+    simulate_motion(ax, initial_angles_rad, final_angles_rad)
+
+    plt.show()
+
+if __name__ == "__main__":
+    main()
+
 
 
