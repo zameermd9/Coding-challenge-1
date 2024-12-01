@@ -12,7 +12,7 @@ Inputs:
 
 Output:
 
-1.We get the end effector Rotation and position and each and every point of Trace
+1.We get the end effector Rotation and position at each and every point of Trace
 
 Things i did in Building this Code:
 
